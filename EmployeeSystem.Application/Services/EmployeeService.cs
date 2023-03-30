@@ -16,7 +16,7 @@ namespace EmployeeSystem.Application.Services
             _employeeRepository = employeeRepository;
             _employeeValidator = employeeValidator;
         }
-        public Task<ResponseWrapper<List<EmployeeResponse>>> GetAllAsync(string? nameFilter, int pageNumber, int pageSize)
+        public async Task<ResponseWrapper<List<EmployeeResponse>>> GetAllAsync(string? nameFilter, int pageNumber, int pageSize)
         {
             ResponseWrapper<List<EmployeeResponse>> response = new();
             if(pageSize > 0 ) response.PageSize = pageSize;
@@ -27,34 +27,32 @@ namespace EmployeeSystem.Application.Services
             if (!string.IsNullOrWhiteSpace(nameFilter))
             {
                 query = query.Where(x => 
-                    x.Name.ToLower().Contains(nameFilter.ToLower())
+                    x.Name.ToLower().Contains(nameFilter.ToLower()) ||
+                    x.LastName.ToLower().Contains(nameFilter.ToLower())
                 );
             }
 
-            var result = query.Select(x => CreateResponse(x))
-            .OrderBy(x => x.BornDate)
-            // .Skip((response.PageNumber - 1) * response.PageSize)
-            // .Take(response.PageSize)
+            var result = query.OrderBy(x => x.BornDate)
+            .Skip((response.PageNumber - 1) * response.PageSize)
+            .Take(response.PageSize)
             .ToList();
 
-            response.Data = result;
+            response.Data = result.Select(x => CreateResponse(x)).ToList();
             response.TotalItems = query.Count();
 
-            return Task.FromResult(response);
+            return response;
         }
 
-        public Task<EmployeeResponse> GetByIdAsync(int id)
+        public async Task<EmployeeResponse> GetByIdAsync(int id)
         {
-            var employee = _employeeRepository.GetAll()
-                .Where(x => x.ID == id )
-                .Select(x => CreateResponse(x)).FirstOrDefault(); //change by ToListAsync
+            var employee = await _employeeRepository.GetByIdAsync(id);
             
             if (employee is null)
             {
                 throw new NotFoundException();
             }
 
-            return Task.FromResult(employee);
+            return CreateResponse(employee);
         }
 
         public async Task<EmployeeResponse> CreateAsync(EmployeeRequest request)
@@ -124,6 +122,7 @@ namespace EmployeeSystem.Application.Services
         {
             return new Employee
             {
+                ID = request.ID,
                 Name = request.Name,
                 LastName = request.LastName,
                 RFC = request.RFC,

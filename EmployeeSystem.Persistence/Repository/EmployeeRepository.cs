@@ -1,61 +1,16 @@
 ﻿using EmployeeSystem.Application.Common.Interface.Persistence;
 using EmployeeSystem.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeSystem.Persistence.Repository
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        private static List<Employee> _employeeList = new List<Employee>();
+        private readonly EmployeeDbContext _employeeDbContext;
 
-        public EmployeeRepository()
-        {      
-            _employeeList.Add(new Employee{
-                ID = 1,
-                Name = "Alberto ",
-                LastName = "Cruz ",
-                BornDate = new DateTime(1998,06,18),
-                RFC = "CUGA980618N4A",
-                Status = Domain.Enums.EmployeeStatus.Inactive});
-
-                _employeeList.Add(new Employee{
-                ID = 2,
-                Name = "Roberto",
-                LastName = "González",
-                BornDate = new DateTime(1989,03,09),
-                RFC = "GOCR980618VE3",
-                Status = Domain.Enums.EmployeeStatus.Inactive});
-
-                _employeeList.Add(new Employee{
-                ID = 3,
-                Name = "Alicia",
-                LastName = "Guerrero",
-                BornDate = new DateTime(1997,02,14),
-                RFC = "GUPA980618CK5",
-                Status = Domain.Enums.EmployeeStatus.Inactive});
-
-                _employeeList.Add(new Employee{
-                ID = 4,
-                Name = "Juan Manuel",
-                LastName = "Cruz",
-                BornDate = new DateTime(2001,11,30),
-                RFC = "CUPJ980618T9A",
-                Status = Domain.Enums.EmployeeStatus.Inactive});
-
-                _employeeList.Add(new Employee{
-                ID = 5,
-                Name = "María de Jesús",
-                LastName = "Méndez",
-                BornDate = new DateTime(1999,12,02),
-                RFC = "MEOJ980618JT0",
-                Status = Domain.Enums.EmployeeStatus.Inactive});
-
-                _employeeList.Add(new Employee{
-                ID = 6,
-                Name = "Melanie",
-                LastName = "Flores",
-                BornDate = new DateTime(1991,05,21),
-                RFC = "FOTM980618PI9",
-                Status = Domain.Enums.EmployeeStatus.Inactive});
+        public EmployeeRepository(EmployeeDbContext employeeDbContext)
+        {
+            _employeeDbContext = employeeDbContext ?? throw new ArgumentNullException(nameof(employeeDbContext));
         }
 
         /// <summary>
@@ -64,7 +19,7 @@ namespace EmployeeSystem.Persistence.Repository
         /// <returns>Table of employees as IQueryable</returns>
         public IQueryable<Employee> GetAll()
         {
-            return _employeeList.AsQueryable();
+            return _employeeDbContext.Employees.AsQueryable();
         }
 
         /// <summary>
@@ -72,11 +27,9 @@ namespace EmployeeSystem.Persistence.Repository
         /// </summary>
         /// <param name="rfc">RFC code string</param>
         /// <returns>Employee Object</returns>
-        public Task<Employee?> GetByRFCAsync(string rfc)
-        {
-            var employee = _employeeList.FirstOrDefault(x => x.RFC == rfc);
-            
-            return Task.FromResult(employee);
+        public async Task<Employee?> GetByRFCAsync(string rfc)
+        {     
+            return await _employeeDbContext.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.RFC == rfc);
         }
 
         /// <summary>
@@ -84,9 +37,9 @@ namespace EmployeeSystem.Persistence.Repository
         /// </summary>
         /// <param name="id">Identifier</param>
         /// <returns>Employee Object</returns>
-        public Task<Employee?> GetByIdAsync(int id)
+        public async Task<Employee?> GetByIdAsync(int id)
         {
-            return Task.FromResult(_employeeList.FirstOrDefault());
+            return await _employeeDbContext.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.ID == id);
         }
 
         /// <summary>
@@ -94,12 +47,12 @@ namespace EmployeeSystem.Persistence.Repository
         /// </summary>
         /// <param name="employee">Employee object</param>
         /// <returns>Created employee</returns>
-        public Task<Employee> AddAsync(Employee employee)
+        public async Task<Employee> AddAsync(Employee employee)
         {
-            employee.ID = _employeeList.Count + 1;
-            _employeeList.Add(employee);
-            
-            return Task.FromResult(employee);
+            await _employeeDbContext.Employees.AddAsync(employee);
+            await _employeeDbContext.SaveChangesAsync();
+
+            return employee;
         }
 
         /// <summary>
@@ -107,11 +60,12 @@ namespace EmployeeSystem.Persistence.Repository
         /// </summary>
         /// <param name="employee">Employee object</param>
         /// <returns>Updated employee object</returns>
-        public Task<Employee> UpdateAsync(Employee employee)
+        public async Task<Employee> UpdateAsync(Employee employee)
         {
-            var updatedEmployee = _employeeList.FirstOrDefault(x => x.ID == employee.ID);
-            updatedEmployee = employee;
-            return Task.FromResult(employee);
+            _employeeDbContext.Employees.Update(employee);
+            await _employeeDbContext.SaveChangesAsync();
+
+            return employee;
         }
 
         /// <summary>
@@ -119,11 +73,10 @@ namespace EmployeeSystem.Persistence.Repository
         /// </summary>
         /// <param name="employee">Employee object</param>
         /// <returns>Task</returns>
-        public Task DeleteAsync(Employee employee)
+        public async Task DeleteAsync(Employee employee)
         {
-            _employeeList.Remove(employee);
-
-            return Task.CompletedTask;
+            _employeeDbContext.Employees.Remove(employee);
+            await _employeeDbContext.SaveChangesAsync();
         }
     }
 }

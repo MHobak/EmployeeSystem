@@ -2,8 +2,8 @@
 {
     public enum EmployeeStatus
     {
-        NotSet,
-        Active,
-        Inactive,
+        NotSet = 0,
+        Active = 1,
+        Inactive = 2,
     }
 }
