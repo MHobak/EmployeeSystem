@@ -8,7 +8,7 @@ Exercise – Web Api project using .Net 7 and SQL Server
 ### Database connection - Web Api
 
 Add the corresponding connection string for the database server in the file
-[appsettings.json](https:///appsettings.json) in the project EmployeeSystem.Api.
+[appsettings.json](https://github.com/MHobak/EmployeeSystem/blob/master/EmployeeSystem.Api/appsettings.json) in the project EmployeeSystem.Api.
 
 Change the value of the key `DBConnection`, there is a default connection that should work as shown below:
 
@@ -34,5 +34,5 @@ You can create the database using migrations int the Package manager console in 
 > Note: Before run the command set the api project as startup project, in the package manager console select the EmployeePersistence project.
 
 ### Database script
-Optionally you can create the database just executing the script [EmployeeDB.sql](https://.sql) which is a backup of the database. This way you don't have to run the EF Core migrations.
+Optionally you can create the database just executing the script [EmployeeDB.sql](https://github.com/MHobak/EmployeeSystem/blob/master/Scripts/EmployeeDB.sql) which is a backup of the database. This way you don't have to run the EF Core migrations.
 
