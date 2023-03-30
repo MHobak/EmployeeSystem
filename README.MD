@@ -36,3 +36,17 @@ You can create the database using migrations int the Package manager console in 
 ### Database script
 Optionally you can create the database just executing the script [EmployeeDB.sql](https://github.com/MHobak/EmployeeSystem/blob/master/Scripts/EmployeeDB.sql) which is a backup of the database. This way you don't have to run the EF Core migrations.
 
+## Run the app
+You can run the app from visual studio or with the `dotnet CLI`
+```bash
+  dotnet run --project .\EmployeeSystem.Api\
+```
+Once the app is running you can access the web api swagger interface on the browser using the following path:
+
+```url
+  {{host}}/swagger/index.html
+```
+for example:
+```url
+  http://localhost:5052/swagger/index.html
+```
