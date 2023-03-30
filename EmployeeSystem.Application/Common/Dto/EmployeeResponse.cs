@@ -15,5 +15,7 @@ namespace EmployeeSystem.Application.Common.Dto
         public DateTime BornDate { get; set; }
 
         public EmployeeStatus Status { get; set; }
+
+        public string EmployeeStatus => Status.ToString();
     }
 }

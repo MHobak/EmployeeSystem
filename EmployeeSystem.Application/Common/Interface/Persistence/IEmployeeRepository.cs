@@ -6,7 +6,9 @@ namespace EmployeeSystem.Application.Common.Interface.Persistence
     {
         IQueryable<Employee> GetAll();
         Task<Employee?> GetByRFCAsync(string rfc);
+        Task<Employee?> GetByIdAsync(int id);
         Task<Employee> AddAsync(Employee employee);
+        Task<Employee> UpdateAsync(Employee employee);
         Task DeleteAsync(Employee employee);
     }
 }

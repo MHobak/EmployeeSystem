@@ -1,25 +1,58 @@
 ﻿using EmployeeSystem.Application.Common.Dto;
 using EmployeeSystem.Application.Common.Interface.Persistence;
+using EmployeeSystem.Application.Exceptions;
 using EmployeeSystem.Domain.Entities;
+using FluentValidation;
 
 namespace EmployeeSystem.Application.Services
 {
     public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IValidator<EmployeeRequest>  _employeeValidator;
 
-        public EmployeeService(IEmployeeRepository employeeRepository)
+        public EmployeeService(IEmployeeRepository employeeRepository, IValidator<EmployeeRequest>  employeeValidator)
         {
             _employeeRepository = employeeRepository;
+            _employeeValidator = employeeValidator;
         }
 
-        public async Task<EmployeeResponse> Create(EmployeeRequest request)
+        public Task<List<EmployeeResponse>> GetAllAsync()
         {
-            var employeee = _employeeRepository.GetByRFCAsync(request.RFC);
+            var list = _employeeRepository.GetAll()
+                .Select(x => CreateResponse(x)).ToList(); //change by ToListAsync
 
-            if (employeee == null)
+            return Task.FromResult(list);
+        }
+
+        public Task<EmployeeResponse> GetByIdAsync(int id)
+        {
+            var employee = _employeeRepository.GetAll()
+                .Where(x => x.ID == id )
+                .Select(x => CreateResponse(x)).FirstOrDefault(); //change by ToListAsync
+            
+            if (employee is null)
             {
-                throw new Exception("RFC already exist.");
+                throw new NotFoundException();
+            }
+
+            return Task.FromResult(employee);
+        }
+
+        public async Task<EmployeeResponse> CreateAsync(EmployeeRequest request)
+        {
+            var employee = await _employeeRepository.GetByRFCAsync(request.RFC);
+
+            if (employee is not null)
+            {
+                throw new DuplicateRfcException();
+            }
+
+            var validationResult = await _employeeValidator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ModelValidationException(validationResult.Errors);
             }
 
             var newEmployee = new Employee
@@ -35,13 +68,50 @@ namespace EmployeeSystem.Application.Services
             return CreateResponse(newEmployee);
         }
 
-
-        public Task<List<EmployeeResponse>> GetAll()
+        public async Task<EmployeeResponse> UpdateAsync(EmployeeRequest request)
         {
-            var list = _employeeRepository.GetAll()
-                .Select(x => CreateResponse(x)).ToList(); //change by ToListAsync
+            var employee = await _employeeRepository.GetByIdAsync(request.ID);
 
-            return Task.FromResult(list);
+            if (employee is null)
+            {
+                throw new NotFoundException();
+            }
+
+            var validationResult = await _employeeValidator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ModelValidationException(validationResult.Errors);
+            }
+
+            Employee newEmployee = CreateModel(request);
+
+            await _employeeRepository.UpdateAsync(newEmployee);
+            return CreateResponse(newEmployee);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var employee = await _employeeRepository.GetByIdAsync(id);
+
+            if (employee is null)
+            {
+                throw new NotFoundException();
+            }
+
+            await _employeeRepository.DeleteAsync(employee);
+        }
+
+        private static Employee CreateModel(EmployeeRequest request)
+        {
+            return new Employee
+            {
+                Name = request.Name,
+                LastName = request.LastName,
+                RFC = request.RFC,
+                BornDate = request.BornDate,
+                Status = request.Status
+            };
         }
 
         private static EmployeeResponse CreateResponse(Employee newEmployee)
