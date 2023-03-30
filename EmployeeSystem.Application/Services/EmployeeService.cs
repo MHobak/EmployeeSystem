@@ -16,6 +16,7 @@ namespace EmployeeSystem.Application.Services
             _employeeRepository = employeeRepository;
             _employeeValidator = employeeValidator;
         }
+
         public async Task<ResponseWrapper<List<EmployeeResponse>>> GetAllAsync(string? nameFilter, int pageNumber, int pageSize)
         {
             ResponseWrapper<List<EmployeeResponse>> response = new();
@@ -43,6 +44,12 @@ namespace EmployeeSystem.Application.Services
             return response;
         }
 
+        /// <summary>
+        /// Gets one record by its id
+        /// </summary>
+        /// <param name="id">Identificator</param>
+        /// <returns>Found employee</returns>
+        /// <exception cref="NotFoundException">Exception in case the employee is not found</exception>
         public async Task<EmployeeResponse> GetByIdAsync(int id)
         {
             var employee = await _employeeRepository.GetByIdAsync(id);
@@ -55,6 +62,13 @@ namespace EmployeeSystem.Application.Services
             return CreateResponse(employee);
         }
 
+        /// <summary>
+        /// Persist a new employee record
+        /// </summary>
+        /// <param name="request">Employye record to create</param>
+        /// <returns>New Created employee</returns>
+        /// <exception cref="DuplicateRfcException">Exception in case the employee is not found</exception>
+        /// <exception cref="ModelValidationException">Exception in case the employee is not found</exception>
         public async Task<EmployeeResponse> CreateAsync(EmployeeRequest request)
         {
             var employee = await _employeeRepository.GetByRFCAsync(request.RFC);
@@ -84,6 +98,13 @@ namespace EmployeeSystem.Application.Services
             return CreateResponse(newEmployee);
         }
 
+        /// <summary>
+        /// Update an existing employye
+        /// </summary>
+        /// <param name="request">employee record wiwth new data</param>
+        /// <returns>Updated employee record</returns>
+        /// <exception cref="NotFoundException">Exception in case the employee is not found</exception>
+        /// <exception cref="ModelValidationException">Exception in case the employee data is not valid</exception>
         public async Task<EmployeeResponse> UpdateAsync(EmployeeRequest request)
         {
             var employee = await _employeeRepository.GetByIdAsync(request.ID);
@@ -106,6 +127,12 @@ namespace EmployeeSystem.Application.Services
             return CreateResponse(newEmployee);
         }
 
+        /// <summary>
+        /// Deletes an employee record bby its id
+        /// </summary>
+        /// <param name="id">Employee identificator</param>
+        /// <returns>Completed Task</returns>
+        /// <exception cref="NotFoundException">Exception in case the employee is not found</exception>
         public async Task DeleteAsync(int id)
         {
             var employee = await _employeeRepository.GetByIdAsync(id);
