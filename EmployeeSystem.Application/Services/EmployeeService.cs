@@ -16,13 +16,22 @@ namespace EmployeeSystem.Application.Services
             _employeeRepository = employeeRepository;
             _employeeValidator = employeeValidator;
         }
-
-        public Task<List<EmployeeResponse>> GetAllAsync()
+        public Task<List<EmployeeResponse>> GetAllAsync(string? nameFilter)
         {
-            var list = _employeeRepository.GetAll()
-                .Select(x => CreateResponse(x)).ToList(); //change by ToListAsync
+            var query = _employeeRepository.GetAll();
 
-            return Task.FromResult(list);
+            if (!string.IsNullOrWhiteSpace(nameFilter))
+            {
+                query = query.Where(x => 
+                    x.Name.ToLower().Contains(nameFilter.ToLower())
+                );
+            }
+
+                var result = query.Select(x => CreateResponse(x))
+                .OrderBy(x => x.BornDate)
+                .ToList(); //change by ToListAsync
+
+            return Task.FromResult(result);
         }
 
         public Task<EmployeeResponse> GetByIdAsync(int id)

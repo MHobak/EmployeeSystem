@@ -7,6 +7,57 @@ namespace EmployeeSystem.Persistence.Repository
     {
         private static List<Employee> _employeeList = new List<Employee>();
 
+        public EmployeeRepository()
+        {      
+            _employeeList.Add(new Employee{
+                ID = 1,
+                Name = "Alberto ",
+                LastName = "Cruz ",
+                BornDate = new DateTime(1998,06,18),
+                RFC = "CUGA980618N4A",
+                Status = Domain.Enums.EmployeeStatus.Inactive});
+
+                _employeeList.Add(new Employee{
+                ID = 2,
+                Name = "Roberto",
+                LastName = "González",
+                BornDate = new DateTime(1989,03,09),
+                RFC = "GOCR980618VE3",
+                Status = Domain.Enums.EmployeeStatus.Inactive});
+
+                _employeeList.Add(new Employee{
+                ID = 3,
+                Name = "Alicia",
+                LastName = "Guerrero",
+                BornDate = new DateTime(1997,02,14),
+                RFC = "GUPA980618CK5",
+                Status = Domain.Enums.EmployeeStatus.Inactive});
+
+                _employeeList.Add(new Employee{
+                ID = 4,
+                Name = "Juan Manuel",
+                LastName = "Cruz",
+                BornDate = new DateTime(2001,11,30),
+                RFC = "CUPJ980618T9A",
+                Status = Domain.Enums.EmployeeStatus.Inactive});
+
+                _employeeList.Add(new Employee{
+                ID = 5,
+                Name = "María de Jesús",
+                LastName = "Méndez",
+                BornDate = new DateTime(1999,12,02),
+                RFC = "MEOJ980618JT0",
+                Status = Domain.Enums.EmployeeStatus.Inactive});
+
+                _employeeList.Add(new Employee{
+                ID = 6,
+                Name = "Melanie",
+                LastName = "Flores",
+                BornDate = new DateTime(1991,05,21),
+                RFC = "FOTM980618PI9",
+                Status = Domain.Enums.EmployeeStatus.Inactive});
+        }
+
         /// <summary>
         /// Method to get the employee
         /// </summary>
