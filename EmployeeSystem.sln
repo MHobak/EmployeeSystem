@@ -3,21 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employee.Api", "Employee.Api\Employee.Api.csproj", "{D2A279BB-47D7-4B9D-852D-4B3A09229745}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeSystem.Api", "Employee.Api\EmployeeSystem.Api.csproj", "{D2A279BB-47D7-4B9D-852D-4B3A09229745}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employee.Application", "Employee.Application\Employee.Application.csproj", "{D03C2627-7CBD-4FC2-AAC5-8965707193CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeSystem.Application", "Employee.Application\EmployeeSystem.Application.csproj", "{D03C2627-7CBD-4FC2-AAC5-8965707193CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employee.Domain", "Employee.Domain\Employee.Domain.csproj", "{E2E1B8C2-18FD-4015-AED4-0BBC34054A2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeSystem.Domain", "Employee.Domain\EmployeeSystem.Domain.csproj", "{E2E1B8C2-18FD-4015-AED4-0BBC34054A2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employee.Persistence", "Employee.Persistence\Employee.Persistence.csproj", "{97D00679-3797-435D-8670-1AB96CC2DE93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeSystem.Persistence", "Employee.Persistence\EmployeeSystem.Persistence.csproj", "{97D00679-3797-435D-8670-1AB96CC2DE93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D2A279BB-47D7-4B9D-852D-4B3A09229745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -36,5 +33,11 @@ Global
 		{97D00679-3797-435D-8670-1AB96CC2DE93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97D00679-3797-435D-8670-1AB96CC2DE93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97D00679-3797-435D-8670-1AB96CC2DE93}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1C922D07-5A7D-4045-B10D-8BC248ED56C6}
 	EndGlobalSection
 EndGlobal
