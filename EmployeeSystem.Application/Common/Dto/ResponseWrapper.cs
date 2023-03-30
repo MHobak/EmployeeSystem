@@ -6,6 +6,6 @@ namespace EmployeeSystem.Application.Common.Dto
         public int PageSize { get; set; } = 10;
         public int TotalItems { get; set; }
         public int TotalPages => (int)Math.Ceiling((decimal)TotalItems / (decimal)PageSize);
-        public T Data { get; set; }
+        public T? Data { get; set; }
     }
 }

@@ -10,7 +10,7 @@ builder.Services.AddSwaggerGen();
 
 //Services
 builder.Services.AddApplicationServices();
-builder.Services.AddPersistenceServices();
+builder.Services.AddPersistenceServices(builder.Configuration.GetConnectionString("DBConnection"));
 
 
 var app = builder.Build();
