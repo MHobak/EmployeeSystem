@@ -17,7 +17,7 @@ Change the value of the key `DBConnection`, there is a default connection that s
     "DBConnection": "Server=(localdb)\\mssqllocaldb;Database=EmployeeDB Trusted_Connection=True;MultipleActiveResultSets=true"
 },
 ```
-Here is another example of a connection string with a user login with a password:
+Here is another example of a connection string with a user login with password:
 
 ```JSON
 "ConnectionStrings": {
@@ -27,7 +27,7 @@ Here is another example of a connection string with a user login with a password
 > Note: Passwords shouldn't be laying around like this ⚠️
 
 ## Databse Creation
-You can create the database using migrations int the Package manager console in visual studio, using the following command
+You can create the database using migrations in the Package manager console in visual studio, using the following command:
 ```bash
   Update-Database
 ```
@@ -37,7 +37,7 @@ You can create the database using migrations int the Package manager console in 
 Optionally you can create the database just executing the script [EmployeeDB.sql](https://github.com/MHobak/EmployeeSystem/blob/master/Scripts/EmployeeDB.sql) which is a backup of the database. This way you don't have to run the EF Core migrations.
 
 ## Run the app
-You can run the app from visual studio or with the `dotnet CLI`
+You can run the app from visual studio or with the `dotnet CLI`, navigate to the solution folder and run the command:
 ```bash
   dotnet run --project .\EmployeeSystem.Api\
 ```
@@ -46,7 +46,8 @@ Once the app is running you can access the web api swagger interface on the brow
 ```url
   {{host}}/swagger/index.html
 ```
-for example:
+For example:
 ```url
   http://localhost:5052/swagger/index.html
 ```
+![alt text](https://github.com/MHobak/EmployeeSystem/blob/master/demo.png?raw=true)
