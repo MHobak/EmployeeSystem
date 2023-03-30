@@ -18,9 +18,12 @@ namespace EmployeeSystem.Api.Controllers
 
         // GET: api/<EmployeeController>
         [HttpGet]
-        public async Task<IActionResult> Get( [FromQuery] string? nameFilter)
+        public async Task<IActionResult> Get( 
+            [FromQuery] string? nameFilter, 
+            [FromQuery] int pageNumber, 
+            [FromQuery] int pageSize)
         {
-            return Ok(await _employeeService.GetAllAsync(nameFilter));
+            return Ok(await _employeeService.GetAllAsync(nameFilter, pageNumber, pageSize));
         }
 
         // GET api/<EmployeeController>/5

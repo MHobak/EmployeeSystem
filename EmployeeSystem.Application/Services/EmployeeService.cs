@@ -16,8 +16,12 @@ namespace EmployeeSystem.Application.Services
             _employeeRepository = employeeRepository;
             _employeeValidator = employeeValidator;
         }
-        public Task<List<EmployeeResponse>> GetAllAsync(string? nameFilter)
+        public Task<ResponseWrapper<List<EmployeeResponse>>> GetAllAsync(string? nameFilter, int pageNumber, int pageSize)
         {
+            ResponseWrapper<List<EmployeeResponse>> response = new();
+            if(pageSize > 0 ) response.PageSize = pageSize;
+            if(pageNumber > 0 ) response.PageNumber = pageNumber;
+
             var query = _employeeRepository.GetAll();
 
             if (!string.IsNullOrWhiteSpace(nameFilter))
@@ -27,11 +31,16 @@ namespace EmployeeSystem.Application.Services
                 );
             }
 
-                var result = query.Select(x => CreateResponse(x))
-                .OrderBy(x => x.BornDate)
-                .ToList(); //change by ToListAsync
+            var result = query.Select(x => CreateResponse(x))
+            .OrderBy(x => x.BornDate)
+            // .Skip((response.PageNumber - 1) * response.PageSize)
+            // .Take(response.PageSize)
+            .ToList();
 
-            return Task.FromResult(result);
+            response.Data = result;
+            response.TotalItems = query.Count();
+
+            return Task.FromResult(response);
         }
 
         public Task<EmployeeResponse> GetByIdAsync(int id)
