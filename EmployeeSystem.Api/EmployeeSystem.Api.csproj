@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Employee.Application\EmployeeSystem.Application.csproj" />
-    <ProjectReference Include="..\Employee.Persistence\EmployeeSystem.Persistence.csproj" />
+    <ProjectReference Include="..\EmployeeSystem.Application\EmployeeSystem.Application.csproj" />
+    <ProjectReference Include="..\EmployeeSystem.Persistence\EmployeeSystem.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

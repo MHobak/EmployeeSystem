@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeSystem.Api", "Employee.Api\EmployeeSystem.Api.csproj", "{D2A279BB-47D7-4B9D-852D-4B3A09229745}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeSystem.Api", "EmployeeSystem.Api\EmployeeSystem.Api.csproj", "{D2A279BB-47D7-4B9D-852D-4B3A09229745}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeSystem.Application", "Employee.Application\EmployeeSystem.Application.csproj", "{D03C2627-7CBD-4FC2-AAC5-8965707193CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeSystem.Application", "EmployeeSystem.Application\EmployeeSystem.Application.csproj", "{D03C2627-7CBD-4FC2-AAC5-8965707193CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeSystem.Domain", "Employee.Domain\EmployeeSystem.Domain.csproj", "{E2E1B8C2-18FD-4015-AED4-0BBC34054A2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeSystem.Domain", "EmployeeSystem.Domain\EmployeeSystem.Domain.csproj", "{E2E1B8C2-18FD-4015-AED4-0BBC34054A2A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeSystem.Persistence", "Employee.Persistence\EmployeeSystem.Persistence.csproj", "{97D00679-3797-435D-8670-1AB96CC2DE93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeSystem.Persistence", "EmployeeSystem.Persistence\EmployeeSystem.Persistence.csproj", "{97D00679-3797-435D-8670-1AB96CC2DE93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -19,7 +19,7 @@ namespace EmployeeSystem.Application.Services
 
             if (employeee == null)
             {
-                throw new Exception("Employee not found");
+                throw new Exception("RFC already exist.");
             }
 
             var newEmployee = new Employee
