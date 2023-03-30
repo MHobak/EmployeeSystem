@@ -1,4 +1,5 @@
-﻿using EmployeeSystem.Application.Common.Dto;
+﻿using AutoMapper;
+using EmployeeSystem.Application.Common.Dto;
 using EmployeeSystem.Application.Common.Interface.Persistence;
 using EmployeeSystem.Application.Exceptions;
 using EmployeeSystem.Domain.Entities;
@@ -10,11 +11,13 @@ namespace EmployeeSystem.Application.Services
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IValidator<EmployeeRequest>  _employeeValidator;
+        private readonly IMapper _mapper;
 
-        public EmployeeService(IEmployeeRepository employeeRepository, IValidator<EmployeeRequest>  employeeValidator)
+        public EmployeeService(IEmployeeRepository employeeRepository, IValidator<EmployeeRequest> employeeValidator, IMapper mapper)
         {
             _employeeRepository = employeeRepository;
             _employeeValidator = employeeValidator;
+            _mapper = mapper;
         }
 
         public async Task<ResponseWrapper<List<EmployeeResponse>>> GetAllAsync(string? nameFilter, int pageNumber, int pageSize)
@@ -38,7 +41,7 @@ namespace EmployeeSystem.Application.Services
             .Take(response.PageSize)
             .ToList();
 
-            response.Data = result.Select(x => CreateResponse(x)).ToList();
+            response.Data = _mapper.Map<List<EmployeeResponse>>(result);
             response.TotalItems = query.Count();
 
             return response;
@@ -59,7 +62,7 @@ namespace EmployeeSystem.Application.Services
                 throw new NotFoundException();
             }
 
-            return CreateResponse(employee);
+            return _mapper.Map<EmployeeResponse>(employee);
         }
 
         /// <summary>
@@ -85,17 +88,11 @@ namespace EmployeeSystem.Application.Services
                 throw new ModelValidationException(validationResult.Errors);
             }
 
-            var newEmployee = new Employee
-            {
-                Name = request.Name,
-                LastName = request.LastName,
-                RFC = request.RFC,
-                BornDate = request.BornDate,
-                Status = request.Status
-            };
+            var newEmployee = _mapper.Map<Employee>(request);
+            newEmployee.ID = 0; //prevent errors
 
             await _employeeRepository.AddAsync(newEmployee);
-            return CreateResponse(newEmployee);
+            return _mapper.Map<EmployeeResponse>(newEmployee);
         }
 
         /// <summary>
@@ -121,10 +118,10 @@ namespace EmployeeSystem.Application.Services
                 throw new ModelValidationException(validationResult.Errors);
             }
 
-            Employee newEmployee = CreateModel(request);
+            Employee newEmployee = _mapper.Map<Employee>(request);
 
             await _employeeRepository.UpdateAsync(newEmployee);
-            return CreateResponse(newEmployee);
+            return _mapper.Map<EmployeeResponse>(newEmployee);
         }
 
         /// <summary>
@@ -143,32 +140,6 @@ namespace EmployeeSystem.Application.Services
             }
 
             await _employeeRepository.DeleteAsync(employee);
-        }
-
-        private static Employee CreateModel(EmployeeRequest request)
-        {
-            return new Employee
-            {
-                ID = request.ID,
-                Name = request.Name,
-                LastName = request.LastName,
-                RFC = request.RFC,
-                BornDate = request.BornDate,
-                Status = request.Status
-            };
-        }
-
-        private static EmployeeResponse CreateResponse(Employee newEmployee)
-        {
-            return new EmployeeResponse
-            {
-                ID = newEmployee.ID,
-                Name = newEmployee.Name,
-                LastName = newEmployee.LastName,
-                RFC = newEmployee.RFC,
-                BornDate = newEmployee.BornDate,
-                Status = newEmployee.Status
-            };
         }
     }
 }

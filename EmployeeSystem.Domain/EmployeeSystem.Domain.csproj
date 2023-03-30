@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Error\" />
+    <Compile Remove="Error\**" />
+    <EmbeddedResource Remove="Error\**" />
+    <None Remove="Error\**" />
   </ItemGroup>
 
 </Project>

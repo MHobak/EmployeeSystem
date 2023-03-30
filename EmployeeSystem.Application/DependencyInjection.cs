@@ -14,6 +14,8 @@ namespace EmployeeSystem.Application
 
             services.AddTransient<IValidator<EmployeeRequest>, EmployeeValidator>();
 
+            services.AddAutoMapper(typeof(DependencyInjection));
+
             return services;
         }
     }
