@@ -21,7 +21,9 @@ namespace EmployeeSystem.Application.Validators
 
             RuleFor(x => x.RFC)
             .NotEmpty()
-            .Length(12,13); //rfc is usually between 12 and 13 char long
+            .Matches(@"^(?:[A-Z&Ñ]{3}|[A-Z][AEIOU][A-Z]{2})\d{6}[A-Z0-9]{3}$") //Regex pattern to match the correct format of a RFC
+            .WithMessage("Invalid RFC format");
+            //.Length(12,13); //rfc is usually between 12 and 13 char long
 
         }
 
